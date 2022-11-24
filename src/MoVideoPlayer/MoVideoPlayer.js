@@ -8,7 +8,7 @@ import Orientation from 'react-native-orientation-locker';
 const MoVideoPlayer = (props) => {
 
   const {
-    style={}, source, poster, title='', playList=[], autoPlay=false, playInBackground=false, 
+    style={}, source, poster, onlongpress, useTouchableOpacity, title='', playList=[], autoPlay=false, playInBackground=false, 
     showSeeking10SecondsButton=true, showHeader=true, showCoverButton=true, showFullScreenButton=true , showSettingButton=true, showMuteButton=true
   } = props
 
@@ -604,16 +604,9 @@ const MoVideoPlayer = (props) => {
     </TouchableWithoutFeedback>
     )
   
-
-
-  return (
-    <TouchableWithoutFeedback
-    onPress={()=>{
-      console.log('TOUCH')
-      setIsVideoFocused(!isVideoFocused)
-    }}
-    >
-       <View style={videoStyle} >
+  
+    const mainView = () => (
+      <View style={videoStyle} >
         <Video 
           style={{flex:1}}
           posterResizeMode='cover'
@@ -673,9 +666,38 @@ const MoVideoPlayer = (props) => {
           {(playList.length>0&&isShowVideoPlaylist)&&videoPlaylistView()}
           {isVideoCovered&&videoCoverView()}
       </View>
-    </TouchableWithoutFeedback>
+    )
+
+  return (
+    <>
+    {!useTouchableOpacity && 
+      <TouchableWithoutFeedback
+        onPress={()=>{
+          console.log('TOUCH')
+          setIsVideoFocused(!isVideoFocused)
+        }}
+        onLongPress={()=>{
+          if(onlongpress) onlongpress();
+        }}>
+
+        {mainView()}
+
+      </TouchableWithoutFeedback>}
+    {useTouchableOpacity && 
+      <TouchableOpacity
+        onPress={()=>{
+          console.log('TOUCH')
+          setIsVideoFocused(!isVideoFocused)
+        }}
+        onLongPress={()=>{
+          if(onlongpress) onlongpress();
+        }}>
+
+        {mainView()}
+
+      </TouchableOpacity>}
+    </>
   );
 }
 
 export default MoVideoPlayer
-
