@@ -5,7 +5,7 @@ import Slider from "react-native-sliders";
 import Orientation from 'react-native-orientation-locker';
 
 
-const MoVideoPlayer = (props) => {
+export default const MoVideoPlayer = (props) => {
 
   const {
     style={}, source, poster, onlongpress, useTouchableOpacity, title='', playList=[], autoPlay=false, playInBackground=false, 
